@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+<br><form id="file-upload-form" class="uploader">
+  <input id="file-upload" type="file" name="fileUpload" accept="image/*" />
+
+  <label for="file-upload" id="file-drag">
+    <img id="file-image" src="#" alt="Preview" class="hidden">
+    <div id="start">
+      <i class="fa fa-download" aria-hidden="true"></i>
+      <div>Select a file or drag here</div>
+      <div id="notimage" class="hidden">Please select an image</div>
+      <span id="file-upload-btn" class="btn btn-primary">Select a file</span>
+    </div>
+    <div id="response" class="hidden">
+      <div id="messages"></div>
+      <progress class="progress" id="file-progress" value="0">
+        <span>0</span>%
+      </progress>
+    </div>
+  </label>
+</form>
+<br><form>
+   <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Choose Layer
+  <span class="caret"></span></button>
+  <ul class="dropdown-menu">
+    <li><a href="#">ABC</a></li>
+    <li><a href="#">PQR</a></li>
+    <li><a href="#">XYZ</a></li>
+  </ul>
+ <div class="form-group row">
+  <div class="col-xs-2">
+    <label for="ex1">Iterations</label>
+    <input class="form-control" id="ex1" type="text">
+  </div>
+  <div class="col-xs-3">
+    <label for="ex2">Octaves</label>
+    <input class="form-control" id="ex2" type="text">
+  </div>
+  <div class="col-xs-4">
+    <label for="ex3">Guide</label>
+    <input class="form-control" id="ex3" type="text"><button type="button" class="btn btn-success">Upload</button><br>
+
+    <br><button type="button" class="btn btn-success">Dream</button>
+  </div>
+
+{% block content %}
+{% endblock %}
