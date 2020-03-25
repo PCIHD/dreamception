@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block content %}
 <br><form id="file-upload-form" class="uploader">
   <input id="file-upload" type="file" name="fileUpload" accept="image/*" />
 
@@ -43,5 +44,5 @@
     <br><button type="button" class="btn btn-success">Dream</button>
   </div>
 
-{% block content %}
+
 {% endblock %}

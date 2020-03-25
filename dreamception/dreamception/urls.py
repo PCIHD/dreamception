@@ -19,7 +19,8 @@ from deepdream import views
 
 urlpatterns = [
     path('',views.IndexView.as_view(),name = 'index' ),
+    path('deepdream/dream',views.Dream.as_view(),name = 'dream'),
     path('admin/', admin.site.urls),
-    path('login/',include('deepdream.urls'))
+    path('deepdream/',include('deepdream.urls'))
 
 ]
