@@ -14,6 +14,9 @@ class SettingsUpload(forms.ModelForm):
         fields = ('octave', 'iteration')
 
 
-class ImageUpload(forms.Form):
+class ImageUpload(forms.ModelForm):
+    class Meta:
+        model = Images
+        fields = ('title','fileUpload')
 
-    file = forms.FileField()
+
