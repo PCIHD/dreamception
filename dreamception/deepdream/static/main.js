@@ -5,12 +5,12 @@ function ekUpload(){
 
     console.log("Upload Initialised");
 
-    var fileSelect    = document.getElementById('file-upload'),
-        fileDrag      = document.getElementById('file-drag'),
-        submitButton  = document.getElementById('submit-button');
+    const fileSelect = document.getElementById('file-upload'),
+        fileDrag = document.getElementById('file-drag'),
+        submitButton = document.getElementById('submit-button');
 
 
-      fileSelect.addEventListener('change', fileSelectHandler, false);
+    fileSelect.addEventListener('change', fileSelectHandler, false);
 
     // Is XHR2 available?
     var xhr = new XMLHttpRequest();
@@ -129,8 +129,8 @@ function ekUpload(){
       if (file.size <= fileSizeLimit * 1024 * 1024) {
         // Progress bar
         pBar.style.display = 'inline';
-        xhr.upload.addEventListener('loadstart', setProgressMaxValue, false);
-        xhr.upload.addEventListener('progress', updateFileProgress, false);
+        //xhr.upload.addEventListener('loadstart', setProgressMaxValue, false);
+        //xhr.upload.addEventListener('progress', updateFileProgress, false);
 
         // File received / failed
         xhr.onreadystatechange = function(e) {
@@ -147,21 +147,22 @@ function ekUpload(){
         var form = document.getElementById('file-upload-form')
         var formdata = new FormData(form)
 
-
-        xhr.open("POST", document.getElementById('file-upload-form').action, true);
-        //xhr.setRequestHeader('X-File-Name', file.name);
-        //xhr.setRequestHeader('X-File-Size', file.size);
-        //xhr.setRequestHeader('X-CSRFToken',getCookie('csrftoken'));
+/*
+        xhr.open("POST", form.action, true);
+        xhr.setRequestHeader('X-File-Name', file.name);
+        xhr.setRequestHeader('X-File-Size', file.size);
+        xhr.setRequestHeader('X-CSRFToken',getCookie('csrftoken'));
         xhr.setRequestHeader('Content-Type', ' multipart/form-data; boundary= ' + boundary );
+      */
         formdata.append('csrfmiddlewaretoken', getCookie('csrftoken'));
-        formdata.append('name',file.name);
-        formdata.append('file',file);
+        formdata.append('title',file.name);
+        //formdata.append('file',file);
 
-        //xhr.send(formData);
+        //xhr.send(formdata);
 
 
 
-        $.ajax({
+         $.ajax({
         url: document.getElementById('file-upload-form').action,
         type: 'POST',
         data: formdata,
@@ -170,18 +171,17 @@ function ekUpload(){
         contentType: false,
         enctype: 'multipart/form-data',
         processData: false,
+        xhr : function(){
+          var xhr = new window.XMLHttpRequest();
+          xhr.upload.addEventListener('loadstart', setProgressMaxValue, false);
+          xhr.upload.addEventListener('progress', updateFileProgress, false);
+
+        },
+          
 
         success: function (response) {
-            $('.upload-progress').hide();
+            $('.upload-progress')
             if (response.status == 200) {
-                console.log(response);
-            }else {
-                try {
-                    var error = JSON.parse(response.error);
-                    alert('Vailed to upload! ' + error['data']['error'] + ', error_code: ' + error['status']);
-                }catch(error){
-                    alert('Vailed to upload! ' + response.error + ', error_code :' + response.status);
-                }
                 console.log(response);
             }
         },
@@ -190,9 +190,15 @@ function ekUpload(){
             $('.upload-progress').hide();
         }
     });
+
     return false;
 
-        console.log("sent")
+
+
+
+
+
+        console.log("sent");
       } else {
         output('Please upload a smaller file (< ' + fileSizeLimit + ' MB).');
       }

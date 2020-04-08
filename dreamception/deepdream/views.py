@@ -12,7 +12,7 @@ import os
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-Media_dir = os.path.join(BASE_DIR, 'deepdream/media/')
+Media_dir = os.path.join(BASE_DIR, 'deepdream\media')
 
 
 class IndexView(View):
@@ -34,16 +34,14 @@ class Dream(View):
     def post(self, *args, **kwargs):
 
         if (self.request.method == 'POST'):
-            image = ImageUpload(self.request.POST, self.request.FILES)
-            print(self.request.POST)
+            image = PhotoForm(self.request.POST, self.request.FILES)
+            print(self.request.FILES)
+            if(image.is_valid()):
+                image.save()
             return JsonResponse({"success": self.request.POST}, status=200)
+        else :
 
-        return JsonResponse({"success": False}, status=400)
+            return JsonResponse({"success": False}, status=400)
 
 
-def handle_uploaded_file(f):
-    print(f.name)
-    with open(Media_dir + f.name, 'wb+') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
 
