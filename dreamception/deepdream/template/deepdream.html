@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<br><form id="file-upload-form" class="uploader">
+
+<br><form id="file-upload-form"  class="uploader" enctype="multipart/form-data" >
+
   <input id="file-upload" type="file" name="fileUpload" accept="image/*" />
 
   <label for="file-upload" id="file-drag">
@@ -19,6 +21,7 @@
       </progress>
     </div>
   </label>
+
 </form>
 <br><form>
    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Choose Layer
@@ -28,7 +31,7 @@
     <li><a href="#">PQR</a></li>
     <li><a href="#">XYZ</a></li>
   </ul>
- <div class="form-group row">
+
   <div class="col-xs-2">
     <label for="ex1">Iterations</label>
     <input class="form-control" id="ex1" type="text">
@@ -41,8 +44,9 @@
 
 
 
-    <br><button type="button" class="btn btn-success">Dream</button>
+    <br>
   </div>
+ </form>
 
-
+ <script src="{% static "main.js" %}"></script>
 {% endblock %}

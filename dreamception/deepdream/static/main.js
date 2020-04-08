@@ -9,7 +9,8 @@ function ekUpload(){
         fileDrag      = document.getElementById('file-drag'),
         submitButton  = document.getElementById('submit-button');
 
-    fileSelect.addEventListener('change', fileSelectHandler, false);
+
+      fileSelect.addEventListener('change', fileSelectHandler, false);
 
     // Is XHR2 available?
     var xhr = new XMLHttpRequest();
@@ -20,6 +21,21 @@ function ekUpload(){
       fileDrag.addEventListener('drop', fileSelectHandler, false);
     }
   }
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
 
   function fileDragHover(e) {
     var fileDrag = document.getElementById('file-drag');
@@ -36,11 +52,12 @@ function ekUpload(){
 
     // Cancel event and hover styling
     fileDragHover(e);
-
+    console.log(files.length)
     // Process all File objects
-    for (var i = 0, f; f = files[i]; i++) {
-      parseFile(f);
-      uploadFile(f);
+    for (var i = 0, f=files.length;i<f ; i++) {
+      parseFile(files[i]);
+
+      uploadFile(files[i]);
     }
   }
 
@@ -58,12 +75,13 @@ function ekUpload(){
       '<strong>' + encodeURI(file.name) + '</strong>'
     );
     
-    // var fileType = file.type;
-    // console.log(fileType);
+     var fileType = file.type;
+     console.log(fileType);
     var imageName = file.name;
 
     var isGood = (/\.(?=gif|jpg|png|jpeg)/gi).test(imageName);
     if (isGood) {
+      console.log("it is a good a")
       document.getElementById('start').classList.add("hidden");
       document.getElementById('response').classList.remove("hidden");
       document.getElementById('notimage').classList.add("hidden");
@@ -96,7 +114,11 @@ function ekUpload(){
     }
   }
 
+
   function uploadFile(file) {
+    console.log("in upload");
+
+
 
     var xhr = new XMLHttpRequest(),
       fileInput = document.getElementById('class-roster-file'),
@@ -121,15 +143,61 @@ function ekUpload(){
         };
 
         // Start upload
-        xhr.open('POST', document.getElementById('file-upload-form').action, true);
-        xhr.setRequestHeader('X-File-Name', file.name);
-        xhr.setRequestHeader('X-File-Size', file.size);
-        xhr.setRequestHeader('Content-Type', 'multipart/form-data');
-        xhr.send(file);
+        var boundary = '---------------------------------------------------------dasdasjkhdiasHDFYIAEFHGASGF1234'
+        var form = document.getElementById('file-upload-form')
+        var formdata = new FormData(form)
+
+
+        xhr.open("POST", document.getElementById('file-upload-form').action, true);
+        //xhr.setRequestHeader('X-File-Name', file.name);
+        //xhr.setRequestHeader('X-File-Size', file.size);
+        //xhr.setRequestHeader('X-CSRFToken',getCookie('csrftoken'));
+        xhr.setRequestHeader('Content-Type', ' multipart/form-data; boundary= ' + boundary );
+        formdata.append('csrfmiddlewaretoken', getCookie('csrftoken'));
+        formdata.append('name',file.name);
+        formdata.append('file',file);
+
+        //xhr.send(formData);
+
+
+
+        $.ajax({
+        url: document.getElementById('file-upload-form').action,
+        type: 'POST',
+        data: formdata,
+        async: true,
+        cache: false,
+        contentType: false,
+        enctype: 'multipart/form-data',
+        processData: false,
+
+        success: function (response) {
+            $('.upload-progress').hide();
+            if (response.status == 200) {
+                console.log(response);
+            }else {
+                try {
+                    var error = JSON.parse(response.error);
+                    alert('Vailed to upload! ' + error['data']['error'] + ', error_code: ' + error['status']);
+                }catch(error){
+                    alert('Vailed to upload! ' + response.error + ', error_code :' + response.status);
+                }
+                console.log(response);
+            }
+        },
+        error: function(response) {
+            console.log("error", response);
+            $('.upload-progress').hide();
+        }
+    });
+    return false;
+
+        console.log("sent")
       } else {
         output('Please upload a smaller file (< ' + fileSizeLimit + ' MB).');
       }
     }
+
   }
 
   // Check for the various File API support.
@@ -139,4 +207,7 @@ function ekUpload(){
     document.getElementById('file-drag').style.display = 'none';
   }
 }
+
+
+
 ekUpload();

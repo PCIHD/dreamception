@@ -36,7 +36,9 @@
     </a>
   </div>
 </div>
-<br><form id="file-upload-form" class="uploader">
+<br>
+ <form id="file-upload-form" class="uploader">
+  <input id="file-upload" type="file" name="fileUpload" accept="image/*" />
 
   <label for="file-upload" id="file-drag">
     <img id="file-image" src="#" alt="Preview" class="hidden">
@@ -53,9 +55,6 @@
       </progress>
     </div>
   </label>
-
-
-</div>
 </form>
 
 {% endblock %}

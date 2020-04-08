@@ -18,6 +18,7 @@ TEMPLATE_DIR = os.path.join(BASE_DIR,'template')
 Deepdream_Templates = os.path.join(BASE_DIR,'deepdream/template')
 STATIC_DIR = os.path.join(BASE_DIR + 'static')
 Dreamception_STATIC_DIR = os.path.join(BASE_DIR + 'deepdream/static')
+Media_dir = os.path.join(BASE_DIR, 'deepdream/media')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -124,3 +125,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [STATIC_DIR,Dreamception_STATIC_DIR]
+#media
+MEDIA_ROOT = Media_dir
+MEDIA_URL = '/media/'

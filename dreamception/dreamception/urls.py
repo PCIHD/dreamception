@@ -16,11 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path , include
 from deepdream import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('',views.IndexView.as_view(),name = 'index' ),
     path('deepdream/dream',views.Dream.as_view(),name = 'dream'),
     path('admin/', admin.site.urls),
-    path('deepdream/',include('deepdream.urls'))
+    path('deepdream/',include('deepdream.urls')),
 
-]
+
+] + static(settings.MEDIA_URL,
+                              document_root=settings.MEDIA_ROOT)
