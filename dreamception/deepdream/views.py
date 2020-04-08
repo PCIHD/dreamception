@@ -34,9 +34,11 @@ class Dream(View):
     def post(self, *args, **kwargs):
 
         if (self.request.method == 'POST'):
-            image = ImageUpload(self.request.POST, self.request.FILES)
+            image = PhotoForm(self.request.POST, self.request.FILES)
             print(self.request.POST)
-            return JsonResponse({"success": self.request.POST}, status=200)
+            if(image.is_valid()):
+                image.save()
+            return JsonResponse({"status": 200}, status=200)
 
         return JsonResponse({"success": False}, status=400)
 

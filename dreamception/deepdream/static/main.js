@@ -170,6 +170,10 @@ function ekUpload(){
         contentType: false,
         enctype: 'multipart/form-data',
         processData: false,
+        xhr: function(){
+          var xhr = new window.XMLHttpRequest();
+
+        } ,
 
         success: function (response) {
             $('.upload-progress').hide();
