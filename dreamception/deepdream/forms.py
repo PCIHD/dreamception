@@ -5,7 +5,7 @@ from .models import Photo, Dream_Config, Images
 class PhotoForm(forms.ModelForm):
     class Meta:
         model = Photo
-        fields = ('file',)
+        fields = ('title','fileUpload',)
 
 
 class SettingsUpload(forms.ModelForm):

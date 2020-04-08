@@ -120,39 +120,14 @@ function ekUpload(){
 
 
 
-    var xhr = new XMLHttpRequest(),
-      fileInput = document.getElementById('class-roster-file'),
-      pBar = document.getElementById('file-progress'),
-      fileSizeLimit = 1024; // In MB
-    if (xhr.upload) {
-      // Check if file is less than x MB
-      if (file.size <= fileSizeLimit * 1024 * 1024) {
-        // Progress bar
-        pBar.style.display = 'inline';
-        xhr.upload.addEventListener('loadstart', setProgressMaxValue, false);
-        xhr.upload.addEventListener('progress', updateFileProgress, false);
+
+
+
 
         // File received / failed
-        xhr.onreadystatechange = function(e) {
-          if (xhr.readyState == 4) {
-            // Everything is good!
 
-            // progress.className = (xhr.status == 200 ? "success" : "failure");
-            // document.location.reload(true);
-          }
-        };
-
-        // Start upload
-        var boundary = '---------------------------------------------------------dasdasjkhdiasHDFYIAEFHGASGF1234'
-        var form = document.getElementById('file-upload-form')
-        var formdata = new FormData(form)
-
-
-        xhr.open("POST", document.getElementById('file-upload-form').action, true);
-        //xhr.setRequestHeader('X-File-Name', file.name);
-        //xhr.setRequestHeader('X-File-Size', file.size);
-        //xhr.setRequestHeader('X-CSRFToken',getCookie('csrftoken'));
-        xhr.setRequestHeader('Content-Type', ' multipart/form-data; boundary= ' + boundary );
+       var form = document.getElementById('file-upload-form');
+       var formdata = new FormData(form);
         formdata.append('csrfmiddlewaretoken', getCookie('csrftoken'));
         formdata.append('name',file.name);
         formdata.append('file',file);
@@ -170,15 +145,15 @@ function ekUpload(){
         contentType: false,
         enctype: 'multipart/form-data',
         processData: false,
-        xhr: function(){
-          var xhr = new window.XMLHttpRequest();
 
-        } ,
+
+
 
         success: function (response) {
             $('.upload-progress').hide();
             if (response.status == 200) {
                 console.log(response);
+
             }else {
                 try {
                     var error = JSON.parse(response.error);
@@ -196,11 +171,6 @@ function ekUpload(){
     });
     return false;
 
-        console.log("sent")
-      } else {
-        output('Please upload a smaller file (< ' + fileSizeLimit + ' MB).');
-      }
-    }
 
   }
 

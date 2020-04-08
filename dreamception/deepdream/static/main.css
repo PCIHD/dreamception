@@ -65,9 +65,9 @@ p {
 }
 
 .uploader {
-  display: block;
+  display: block ;
   clear: both;
-  margin: 0 auto;
+  margin:  auto;
   width: 100%;
   max-width: 600px;
 }
