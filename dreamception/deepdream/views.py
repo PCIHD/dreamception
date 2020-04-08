@@ -28,9 +28,9 @@ class IndexView(View):
             print(self.request.POST)
             if (image.is_valid()):
                 image.save()
-                img = download(self.request.FILES['fileUpload'], 500)
 
-            return JsonResponse({"status": 200 , "goto " : '/deepdream/'}, status=200)
+
+            return JsonResponse({"status": 200 }, status=200)
 
         return JsonResponse({"success": False}, status=400)
 
@@ -51,7 +51,7 @@ class Dream(View):
             print(self.request.POST)
             if(image.is_valid()):
                 image.save()
-                img = download(self.request.FILES['fileUpload'],500)
+
 
 
 

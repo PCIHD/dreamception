@@ -153,6 +153,7 @@ function ekUpload(){
             $('.upload-progress').hide();
             if (response.status == 200) {
                 console.log(response);
+                window.location = '/deepdream/dream';
 
             }else {
                 try {
