@@ -180,8 +180,8 @@ get_tiled_gradients = TiledGradients(dream_model)
 
 
 
-class Dream:
-    def run_deep_dream_with_octaves(img, steps_per_octave=100, step_size=0.05,
+
+def run_deep_dream_with_octaves(img, steps_per_octave=100, step_size=0.05,
                                     octaves=range(-2, 3), octave_scale=1.1):
         base_shape = tf.shape(img)
         img = tf.keras.preprocessing.image.img_to_array(img)
@@ -211,7 +211,9 @@ class Dream:
 
 
 
+orignal_img = download(name,max_dim=500)
 
+run_deep_dream_with_octaves(orignal_img)
 
 
 
