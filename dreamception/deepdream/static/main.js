@@ -177,12 +177,24 @@ function ekUpload(){
 
   // Check for the various File API support.
   if (window.File && window.FileList && window.FileReader) {
+    console.log(window.location);
     Init();
   } else {
     document.getElementById('file-drag').style.display = 'none';
   }
 }
 
+function getform(){
+    function  Init() {
+        console.log("workin nigga");
+
+    }
+    Init();
+}
+
+console.log(window.location);
+if(window.location.pathname =='/'){
+    ekUpload();
+}
 
 
-ekUpload();
