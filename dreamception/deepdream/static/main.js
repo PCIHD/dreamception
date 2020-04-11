@@ -1,5 +1,6 @@
 // File Upload
-// 
+//
+var photo_name;
 function ekUpload(){
   function Init() {
 
@@ -129,8 +130,9 @@ function ekUpload(){
        var form = document.getElementById('file-upload-form');
        var formdata = new FormData(form);
         formdata.append('csrfmiddlewaretoken', getCookie('csrftoken'));
-        formdata.append('name',file.name);
-        formdata.append('file',file);
+        formdata.append('title',file.name);
+
+        photo_name = file.name;
 
         //xhr.send(formData);
 
@@ -184,17 +186,37 @@ function ekUpload(){
   }
 }
 
+
+
+
 function getform(){
     function  Init() {
         console.log("workin nigga");
+        btn = document.getElementById("dream");
+
+
+
+        btn.addEventListener('click',openConnect,false);
+
+
+
+
+
+        function openConnect(e){
+
+        }
 
     }
     Init();
 }
 
-console.log(window.location);
+
+
+
 if(window.location.pathname =='/'){
     ekUpload();
 }
 
-
+if(window.location.pathname == '/deepdream/dream'){
+    getform();
+}

@@ -7,7 +7,8 @@ class Photo(models.Model):
 class Dream_Config(models.Model):
 
     octave = models.DecimalField(max_digits=2,decimal_places=1)
-    iteration = models.IntegerField()
+    scale = models.DecimalField(max_digits=4 ,decimal_places=2)
+    layer = models.IntegerField(max_length=15 , default=42)
 # Create your models here.
 class Images(models.Model):
     title = models.CharField(max_length=50)

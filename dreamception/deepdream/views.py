@@ -7,14 +7,14 @@ from django.http import JsonResponse
 import numpy as np
 
 
-from .forms import PhotoForm
+from .forms import PhotoForm,Dream_Config
 import os
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-Media_dir = os.path.join(BASE_DIR, 'deepdream/media/')
+Media_dir = os.path.join(BASE_DIR, 'deepdream/media/photos')
 
-
+name = ''
 class IndexView(View):
     # print("VERIFICATION: ")
     template_name = 'index.html'
@@ -25,7 +25,9 @@ class IndexView(View):
     def post(self, *args, **kwargs):
         if (self.request.method == 'POST'):
             image = PhotoForm(self.request.POST, self.request.FILES)
-            print(self.request.POST)
+            print(self.request.FILES)
+            name = self.request.POST['title']
+
             if (image.is_valid()):
                 image.save()
 
@@ -47,10 +49,9 @@ class Dream(View):
 
 
         if (self.request.method == 'POST'):
-            image = PhotoForm(self.request.POST, self.request.FILES)
-            print(self.request.POST)
-            if(image.is_valid()):
-                image.save()
+
+
+
 
 
 

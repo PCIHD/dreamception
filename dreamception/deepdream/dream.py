@@ -213,7 +213,7 @@ def run_deep_dream_with_octaves(img, steps_per_octave=100, step_size=0.05,
 
 orignal_img = download(name,max_dim=500)
 
-run_deep_dream_with_octaves(orignal_img)
+run_deep_dream_with_octaves(img = orignal_img)
 
 
 

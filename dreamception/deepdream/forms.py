@@ -8,10 +8,6 @@ class PhotoForm(forms.ModelForm):
         fields = ('title','fileUpload',)
 
 
-class SettingsUpload(forms.ModelForm):
-    class Meta:
-        model = Dream_Config
-        fields = ('octave', 'iteration')
 
 
 class ImageUpload(forms.ModelForm):
@@ -20,3 +16,7 @@ class ImageUpload(forms.ModelForm):
         fields = ('title','fileUpload')
 
 
+class dream_settings(forms.ModelForm):
+    class Meta:
+        model = Dream_Config
+        fields = ('octave','scale','layer')
