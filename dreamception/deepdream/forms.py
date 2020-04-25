@@ -1,5 +1,5 @@
 from django import forms
-from .models import Photo, Dream_Config, Images
+from .models import Photo, Dream_Config
 
 
 class PhotoForm(forms.ModelForm):
@@ -10,13 +10,12 @@ class PhotoForm(forms.ModelForm):
 
 
 
-class ImageUpload(forms.ModelForm):
-    class Meta:
-        model = Images
-        fields = ('title','fileUpload')
-
 
 class dream_settings(forms.ModelForm):
     class Meta:
         model = Dream_Config
         fields = ('octave','scale','layer')
+
+
+class response(forms.Form):
+    image = forms.ImageField()

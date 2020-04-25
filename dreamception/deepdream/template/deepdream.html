@@ -1,33 +1,45 @@
 {% extends 'base.html' %}
-{% load static %}
 {% block content %}
+ {% load static %}
+
+<div class="preview">
+
+  <img id = "image" src="{{  img }}" align="left" style="width:50%;height:50%;">
+{{  img }}
+  <form  id = 'dream-form' method="post">
+      {% csrf_token %}
+
+  <div class="Details">
+
+    <label for="Layer" >Layer</label>
+      <br>
+
+    <select id="Layer" style="width: 13%; height: 30px" name = "layerlist">
+
+      <option value="Choose Layer">Choose Layer</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+    </select>
 
 
-<br><form>
-   <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Choose Layer
-  <span class="caret"></span></button>
-  <ul class="dropdown-menu">
-    <li><a href="#">ABC</a></li>
-    <li><a href="#">PQR</a></li>
-    <li><a href="#">XYZ</a></li>
-  </ul>
+      <br>
+      <label for="Octave">Octave range:</label><br>
+      <input type="text" id="Octave1" name="Octave1" method="post"> <input type="text" id = "Octave2" name="Octave2" method="post"><br>
+      <label for="Scale">Scale:</label><br>
 
-  <div class="col-xs-2">
-    <label for="ex1">oct</label>
-    <input class="form-control" id="ex1" type="text">
+      <input type="text" id="Scale" name="Scale" method="post">
+      <button id = 'dream' type="button">Dream</button>
   </div>
-  <div class="col-xs-3">
-    <label for="ex2">Octaves</label>
-    <input class="form-control" id="ex2" type="text">
-  </div>
-  <div class="col-xs-4">
-      <button type= "submit" id = "dream">dream</button>
+    </form>
+</div>
 
-
-
-    <br>
-  </div>
- </form>
-
-<script src="{% static "main.js" %}"></script>
-{% endblock %}
+<script src="{% static "dream.js" %}"></script>
+    {% endblock %}

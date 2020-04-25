@@ -17,62 +17,19 @@ import matplotlib.pyplot as plt
 
 import IPython.display as display
 import PIL.Image
+import cv2
+from tensorflow.compat.v1 import ConfigProto
+from tensorflow.compat.v1 import InteractiveSession
+config = ConfigProto()
+config.gpu_options.allow_growth = True
+session = InteractiveSession(config=config)
 
 
 
 
 
+frames = []
 
-# Download an image and read it into a NumPy array.
-def download(url, max_dim=None):
-    img = PIL.Image.open(url)
-    if max_dim:
-        img.thumbnail((max_dim, max_dim))
-    return np.array(img)
-
-
-# Normalize an image
-def deprocess(img):
-    img = 255 * (img + 1.0) / 2.0
-    return tf.cast(img, tf.uint8)
-
-
-# Display an image
-def show(img):
-    display.display(PIL.Image.fromarray(np.array(img)))
-
-
-# Downsizing the image makes it easier to work with.
-name = 'img.jpg'
-
-# ## Prepare the feature extraction model
-
-
-
-
-base_model = tf.keras.applications.InceptionV3(include_top=False, weights='imagenet')
-
-names = ['mixed9']
-layers = [base_model.get_layer(name).output for name in names]
-base_model.get_layer(index=3)
-# Create the feature extraction model
-dream_model = tf.keras.Model(inputs=base_model.input, outputs=layers)
-
-
-def calc_loss(img, model):
-    # Pass forward the image through the model to retrieve the activations.
-    # Converts the image into a batch of size 1.
-    img_batch = tf.expand_dims(img, axis=0)
-    layer_activations = model(img_batch)
-    if len(layer_activations) == 1:
-        layer_activations = [layer_activations]
-
-    losses = []
-    for act in layer_activations:
-        loss = tf.math.reduce_mean(act)
-        losses.append(loss)
-
-    return tf.reduce_sum(losses)
 
 
 
@@ -112,7 +69,7 @@ class DeepDream(tf.Module):
 
 
 
-deepdream = DeepDream(dream_model)
+
 
 
 
@@ -174,15 +131,45 @@ class TiledGradients(tf.Module):
     # In[18]:
 
 
-get_tiled_gradients = TiledGradients(dream_model)
+
+def calc_loss(img, model):
+    # Pass forward the image through the model to retrieve the activations.
+    # Converts the image into a batch of size 1.
+    img_batch = tf.expand_dims(img, axis=0)
+    layer_activations = model(img_batch)
+    if len(layer_activations) == 1:
+        layer_activations = [layer_activations]
+
+    losses = []
+    for act in layer_activations:
+        loss = tf.math.reduce_mean(act)
+        losses.append(loss)
+
+    return tf.reduce_sum(losses)
+
+
+
+class dream:
+    def __init__(self ):
+
+        self.base_model = tf.keras.applications.InceptionV3(include_top=False, weights='imagenet')
 
 
 
 
 
+    # Create the feature extraction model
 
-def run_deep_dream_with_octaves(img, steps_per_octave=100, step_size=0.05,
-                                    octaves=range(-2, 3), octave_scale=1.1):
+
+
+
+    def run_deep_dream_with_octaves(self,img,  names = ['mixed0'],steps_per_octave=30, step_size=0.05,
+                                    octaves=range(-5, 10), octave_scale=1.1):
+
+        layers = [self.base_model.get_layer(name).output for name in names]
+        dream_model = tf.keras.Model(inputs=self.base_model.input, outputs=layers)
+        self.deepdream = DeepDream(dream_model)
+        self.get_tiled_gradients = TiledGradients(dream_model)
         base_shape = tf.shape(img)
         img = tf.keras.preprocessing.image.img_to_array(img)
         img = tf.keras.applications.inception_v3.preprocess_input(img)
@@ -195,26 +182,59 @@ def run_deep_dream_with_octaves(img, steps_per_octave=100, step_size=0.05,
             img = tf.image.resize(img, tf.cast(new_size, tf.int32))
 
             for step in range(steps_per_octave):
-                gradients = get_tiled_gradients(img)
-                img = img + gradients * step_size
+                gradients = self.get_tiled_gradients(img)
+                img = img +  img * gradients * step_size
                 img = tf.clip_by_value(img, -1, 1)
 
-                if step % 10 == 0:
+                if step % 100 == 0:
                     display.clear_output(wait=True)
-                    plt.imshow(img)
+
+
+
+
+                    plt.imshow(img )
                     plt.show()
 
                     print("Octave {}, Step {}".format(octave, step))
 
-        result = deprocess(img)
+        result = self.deprocess(img)
         return result
 
+    # Download an image and read it into a NumPy array.
+    def download(self,url, max_dim=None):
+        img = PIL.Image.open(url)
+        if max_dim:
+            img.thumbnail((max_dim, max_dim))
+        return np.array(img)
+
+    # Normalize an image
+    def deprocess(self,img):
+        img = 255 * (img + 1.0) / 2.0
+        return tf.cast(img, tf.uint8)
+
+    # Display an image
+    def show(self,img):
+        display.display(PIL.Image.fromarray(np.array(img)))
 
 
-orignal_img = download(name,max_dim=500)
+# Downsizing the image makes it easier to work with.
 
-run_deep_dream_with_octaves(img = orignal_img)
 
+# ## Prepare the feature extraction model
+
+
+
+
+
+
+
+
+#d = dream()
+#name = 'img.jpg'
+
+#orignal_img = d.download(name,max_dim=500)
+
+#d.run_deep_dream_with_octaves(img = orignal_img)
 
 
 
