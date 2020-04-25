@@ -202,8 +202,46 @@ p {
 img{
    border: 3px solid #eee;
   border-radius:8px;
+  transition: all .2s ease-in-out;
 
 }
 img:hover {
   border-color: #454cad;
+}
+
+input{
+  border: 3px solid #eee;
+  border-radius:8px;
+  transition: all .2s ease-in-out;
+}
+ input:hover {
+  border-color: #454cad;
+}
+select{
+  width: auto;
+  border: 3px solid #eee;
+  border-radius:8px;
+  transition: all .2s ease-in-out;
+}
+ select:hover {
+  border-color: #454cad;
+}
+button{
+  border: 3px solid #eee;
+  border-radius:8px;
+  transition: all .2s ease-in-out;
+}
+ button:hover {
+  background-color: #454cad;;
+  color:white;
+}
+ .preview{
+   position: relative;
+ }
+.Details{
+  position: absolute;
+  border:3px  #eee;
+
+
+  left:70%;
 }

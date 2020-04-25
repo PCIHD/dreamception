@@ -163,8 +163,8 @@ class dream:
 
 
 
-    def run_deep_dream_with_octaves(self,img,  names = ['mixed0'],steps_per_octave=30, step_size=0.05,
-                                    octaves=range(-5, 10), octave_scale=1.1):
+    def run_deep_dream_with_octaves(self,img,  names = ['mixed0'],steps_per_octave=50, step_size=0.05,
+                                    octaves=range(-2, 3), octave_scale=1.1):
 
         layers = [self.base_model.get_layer(name).output for name in names]
         dream_model = tf.keras.Model(inputs=self.base_model.input, outputs=layers)
@@ -183,7 +183,7 @@ class dream:
 
             for step in range(steps_per_octave):
                 gradients = self.get_tiled_gradients(img)
-                img = img +  img * gradients * step_size
+                img = img +  gradients * step_size
                 img = tf.clip_by_value(img, -1, 1)
 
                 if step % 100 == 0:
