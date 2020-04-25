@@ -199,3 +199,11 @@ p {
   border-color: #454cad;
   cursor: pointer;
 }
+img{
+   border: 3px solid #eee;
+  border-radius:8px;
+
+}
+img:hover {
+  border-color: #454cad;
+}

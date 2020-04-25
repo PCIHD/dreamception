@@ -24,7 +24,7 @@ urlpatterns = [
     path('deepdream/dream',views.Dream.as_view(),name = 'dream'),
     path('admin/', admin.site.urls),
     path('deepdream/',include('deepdream.urls')),
-    path('api-auth/', include('rest_framework.urls'))
+
 
 
 ] + static(settings.MEDIA_URL,

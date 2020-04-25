@@ -10,13 +10,13 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.core import serializers
 from django.db.models.fields.files import ImageFieldFile
 from .models import Photo
-from .forms import PhotoForm,response
+from .forms import PhotoForm
 from .dream import dream
 import os
 from PIL import  Image
-from io import BytesIO
-from django.core.files import File
-import jsonpickle
+from django.core.files.base import ContentFile
+from PIL import Image
+from io import StringIO
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 Media_dir = os.path.join(BASE_DIR, 'deepdream\media\photos')
 
@@ -83,8 +83,10 @@ class Dream(View):
             print(layer,octave,Scale)
             dreamified = self.dreaming.run_deep_dream_with_octaves(img ,octave_scale=Scale , octaves=range(octave[0],octave[1]) ,names = [self.layer_dict[layer]])
             img1 = np.array(dreamified)
+
             final = Image.fromarray(img1,'RGB')
-            image.dreamified.save("dreamified" + name , final.)
+            final.save(image.title)
+            image.dreamified.save(image.title,open(image.title,'rb'))
 
 
 
@@ -92,7 +94,7 @@ class Dream(View):
 
 
 
-            return JsonResponse({"success":True , "img":image.dreamified.path }, status=200 )
+            return JsonResponse({"success":True , "img":image.dreamified.url}, status=200 )
 
         return JsonResponse({"success": False}, status=400)
 

@@ -5,7 +5,7 @@ from .models import Photo, Dream_Config
 class PhotoForm(forms.ModelForm):
     class Meta:
         model = Photo
-        fields = ('title','fileUpload',)
+        fields = ('title','fileUpload')
 
 
 
@@ -17,5 +17,3 @@ class dream_settings(forms.ModelForm):
         fields = ('octave','scale','layer')
 
 
-class response(forms.Form):
-    image = forms.ImageField()

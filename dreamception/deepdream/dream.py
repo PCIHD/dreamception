@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 
 import IPython.display as display
 import PIL.Image
-import cv2
+
 from tensorflow.compat.v1 import ConfigProto
 from tensorflow.compat.v1 import InteractiveSession
 config = ConfigProto()
