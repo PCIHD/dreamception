@@ -1,3 +1,4 @@
+import PIL
 from django.shortcuts import render
 
 # Create your views here.
@@ -15,8 +16,8 @@ from .dream import dream
 import os
 from PIL import  Image
 from django.core.files.base import ContentFile
-from PIL import Image
-from io import StringIO
+from PIL import Image,ImageSequence
+from io import BytesIO
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 Media_dir = os.path.join(BASE_DIR, 'deepdream\media\photos')
 
@@ -29,7 +30,7 @@ class IndexView(View):
     template_name = 'index.html'
     def get(self, *args, **kwargs):
 
-        return render(self.request, self.template_name, {}) 
+        return render(self.request, self.template_name, {})
 
     def post(self, *args, **kwargs):
         if (self.request.method == 'POST'):
@@ -39,6 +40,7 @@ class IndexView(View):
             name = self.request.POST['title']
 
             print(name)
+
 
             if (image.is_valid()):
 
@@ -69,9 +71,9 @@ class Dream(View):
 
 
             image = Photo.objects.all().order_by("-id")[0]
+            img = PIL.Image.open(image.fileUpload.path)
 
 
-            img = self.dreaming.download(image.fileUpload.path)
 
             print(self.request.POST , self.request.FILES)
             layer = int(self.request.POST['layerlist'])
@@ -81,12 +83,39 @@ class Dream(View):
             octave.append(int(self.request.POST['Octave2']))
             Scale = float(self.request.POST['Scale'])
             print(layer,octave,Scale)
-            dreamified = self.dreaming.run_deep_dream_with_octaves(img ,octave_scale=Scale , octaves=range(octave[0],octave[1]) ,names = [self.layer_dict[layer]])
-            img1 = np.array(dreamified)
+            if(img.format=='GIF'):
+                imlist = []
 
-            final = Image.fromarray(img1,'RGB')
-            final.save(image.title)
+                for frame in ImageSequence.Iterator(img):
+                    frame = frame.convert(mode='RGB')
+
+
+
+                    image_frame = np.array(frame)
+
+                    print(image_frame.shape)
+                    dreamified = self.dreaming.run_deep_dream_with_octaves(image_frame, octave_scale=Scale,
+                                                                           octaves=range(octave[0], octave[1]),
+                                                                           names=[self.layer_dict[layer]],steps_per_octave=30)
+                    img1 = np.array(dreamified)
+
+                    final = Image.fromarray(img1, 'RGB')
+                    imlist.append(final)
+                d = img.info['duration']
+                imlist[0].save(image.title,save_all = True,append_images = imlist,duration = d)
+
+
+            else:
+                image_frame = np.array(img)
+                print(image_frame.shape)
+                dreamified = self.dreaming.run_deep_dream_with_octaves(image_frame ,octave_scale=Scale , octaves=range(octave[0],octave[1]) ,names = [self.layer_dict[layer]])
+                img1 = np.array(dreamified)
+
+                final = Image.fromarray(img1,'RGB')
+
+                final.save(image.title)
             image.dreamified.save(image.title,open(image.title,'rb'))
+            os.remove(image.title)
 
 
 
@@ -98,11 +127,3 @@ class Dream(View):
 
         return JsonResponse({"success": False}, status=400)
 
-
-
-class ExtendedEncoder(DjangoJSONEncoder):
-    def default(self, o):
-        if isinstance(o, ImageFieldFile):
-            return str(o)
-        else:
-            return super().default(o)

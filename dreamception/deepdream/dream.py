@@ -179,6 +179,7 @@ class dream:
         for octave in octaves:
             # Scale the image based on the octave
             new_size = tf.cast(tf.convert_to_tensor(base_shape[:-1]), tf.float32) * (octave_scale ** octave)
+            print(new_size)
             img = tf.image.resize(img, tf.cast(new_size, tf.int32))
 
             for step in range(steps_per_octave):
