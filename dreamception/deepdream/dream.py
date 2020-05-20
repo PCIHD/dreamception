@@ -184,7 +184,8 @@ class dream:
 
             for step in range(steps_per_octave):
                 gradients = self.get_tiled_gradients(img)
-                img = img +  gradients * step_size
+                grad = gradients*step_size
+                img = img *(1 + grad ) + 0.5*grad
                 img = tf.clip_by_value(img, -1, 1)
 
                 if step % 100 == 0:
